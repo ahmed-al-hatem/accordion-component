@@ -1,0 +1,158 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: #29252d;
+}
+
+.faq-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f1e5d5 0%,
+      #e4d9d3 45%,
+      #d5d1d8 100%
+    );
+}
+
+.faq-container {
+  width: 100%;
+  max-width: 700px;
+}
+
+.faq-title {
+  margin-bottom: 28px;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.faq-item {
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+.faq-question {
+  width: 100%;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 18px 20px;
+
+  border: 0;
+  background: #ffffff;
+
+  color: #29252d;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.faq-question:hover {
+  background: #fafafa;
+}
+
+.faq-icon {
+  flex-shrink: 0;
+
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #f1edf2;
+  color: #5d5262;
+
+  font-size: 20px;
+  font-weight: 400;
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+
+  transition: grid-template-rows 0.25s ease;
+}
+
+.faq-answer p {
+  overflow: hidden;
+  padding: 0 20px;
+
+  color: #6b6570;
+  font-size: 15px;
+  line-height: 1.6;
+
+  transition: padding 0.25s ease;
+}
+
+.faq-item.is-open .faq-answer {
+  grid-template-rows: 1fr;
+}
+
+.faq-item.is-open .faq-answer p {
+  padding: 0 20px 20px;
+}
+
+.faq-item.is-open .faq-icon {
+  background: #5d5262;
+  color: #ffffff;
+  transform: rotate(180deg);
+}
+
+@media (max-width: 600px) {
+  .faq-section {
+    padding: 30px 16px;
+  }
+
+  .faq-title {
+    font-size: 26px;
+    margin-bottom: 22px;
+  }
+
+  .faq-question {
+    min-height: 60px;
+    padding: 16px;
+    font-size: 15px;
+  }
+
+  .faq-answer p {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .faq-item.is-open .faq-answer p {
+    padding: 0 16px 18px;
+  }
+}
