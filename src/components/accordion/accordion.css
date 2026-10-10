@@ -1,0 +1,348 @@
+/* ===========================================================================
+ * Accordion styles — standalone, no global dependencies.
+ * Theme it by overriding the --accordion-* variables on any ancestor or on
+ * the .accordion element itself. Defaults use :where() (zero specificity) so
+ * any selector of yours wins.
+ * ========================================================================= */
+
+:where(.accordion) {
+  --accordion-accent: #4f46e5;
+  --accordion-accent-soft: color-mix(in srgb, var(--accordion-accent) 9%, var(--accordion-surface));
+  --accordion-text: #1b1e2b;
+  --accordion-muted: #5d6275;
+  --accordion-border: #e3e5ec;
+  --accordion-surface: #ffffff;
+  --accordion-surface-muted: #f3f4f8;
+  --accordion-radius: 10px;
+  --accordion-duration: 250ms;
+  --accordion-easing: ease;
+  --accordion-pad-block: 16px;
+  --accordion-pad-inline: 16px;
+  --accordion-font-size: 1rem;
+  --accordion-gap: 8px;
+  --accordion-scroll-margin: 0px;
+}
+
+/* ---- Dark theme ----
+ * Light by default. Dark applies only under a .dark or [data-theme='dark']
+ * ancestor, never automatically from the OS setting. */
+:where(.dark, [data-theme='dark']) :where(.accordion) {
+  --accordion-accent: #818cf8;
+  --accordion-text: #e6e8f0;
+  --accordion-muted: #a2a7bb;
+  --accordion-border: #2c3040;
+  --accordion-surface: #171923;
+  --accordion-surface-muted: #1f2230;
+}
+
+
+.accordion {
+  color: var(--accordion-text);
+  font-size: var(--accordion-font-size);
+}
+
+/* ---- Sizes ---- */
+.accordion[data-size='sm'] {
+  --accordion-pad-block: 10px;
+  --accordion-pad-inline: 12px;
+  --accordion-font-size: 0.875rem;
+}
+
+.accordion[data-size='lg'] {
+  --accordion-pad-block: 20px;
+  --accordion-pad-inline: 24px;
+  --accordion-font-size: 1.125rem;
+}
+
+/* ---- Radius ---- */
+.accordion[data-radius='none'] { --accordion-radius: 0px; }
+.accordion[data-radius='sm'] { --accordion-radius: 6px; }
+.accordion[data-radius='lg'] { --accordion-radius: 16px; }
+.accordion[data-radius='full'] { --accordion-radius: 28px; }
+
+/* ---- Toolbar ---- */
+.accordion__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--accordion-gap);
+  margin-block-end: calc(var(--accordion-gap) * 2);
+}
+
+.accordion__action {
+  font: inherit;
+  font-size: 0.875em;
+  font-weight: 600;
+  color: var(--accordion-text);
+  background: var(--accordion-surface);
+  border: 1px solid var(--accordion-border);
+  border-radius: min(var(--accordion-radius), 10px);
+  padding: 6px 16px;
+  cursor: pointer;
+}
+
+.accordion__action:hover:not(:disabled) {
+  color: var(--accordion-accent);
+  border-color: var(--accordion-accent);
+}
+
+.accordion__action:focus-visible {
+  outline: 2px solid var(--accordion-accent);
+  outline-offset: 2px;
+}
+
+.accordion__action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- Item / trigger ---- */
+.accordion__item {
+  scroll-margin-block-start: var(--accordion-scroll-margin);
+}
+
+.accordion__heading {
+  margin: 0;
+  font-size: inherit;
+  font-weight: 500;
+}
+
+.accordion__trigger {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding-block: var(--accordion-pad-block);
+  padding-inline: var(--accordion-pad-inline);
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  line-height: 1.5;
+  cursor: pointer;
+  border-radius: var(--accordion-radius);
+}
+
+.accordion__trigger[data-icon-position='start'] {
+  flex-direction: row-reverse;
+}
+
+.accordion__trigger:hover:not(:disabled) {
+  color: var(--accordion-accent);
+}
+
+.accordion__trigger:focus-visible {
+  outline: 2px solid var(--accordion-accent);
+  outline-offset: -2px;
+}
+
+.accordion__trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.accordion__trigger[aria-disabled='true'] {
+  cursor: default;
+}
+
+.accordion__title {
+  flex: 1;
+}
+
+.accordion__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--accordion-muted);
+}
+
+.accordion__item[data-state='open'] .accordion__icon {
+  color: var(--accordion-accent);
+}
+
+.accordion__svg {
+  display: block;
+}
+
+.accordion__svg-vertical {
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.accordion__item[data-state='open'] .accordion__svg--arrow {
+  transform: rotate(180deg);
+}
+
+.accordion__item[data-state='open'] .accordion__svg-vertical {
+  transform: scaleY(0);
+}
+
+/* ---- Content: animate height via grid rows ---- */
+.accordion__content {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.accordion__content[data-state='open'] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.accordion__content-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.accordion__content-body {
+  padding-inline: var(--accordion-pad-inline);
+  padding-block-end: var(--accordion-pad-block);
+  color: var(--accordion-muted);
+  line-height: 1.8;
+}
+
+.accordion__content-body > :first-child { margin-block-start: 0; }
+.accordion__content-body > :last-child { margin-block-end: 0; }
+
+/* ---- Animation ---- */
+.accordion[data-animated='true'] .accordion__content {
+  transition:
+    grid-template-rows var(--accordion-duration) var(--accordion-easing),
+    opacity var(--accordion-duration) var(--accordion-easing);
+}
+
+.accordion[data-animated='true'] .accordion__svg,
+.accordion[data-animated='true'] .accordion__svg-vertical {
+  transition: transform var(--accordion-duration) var(--accordion-easing);
+}
+
+.accordion[data-animated='true'] .accordion__item,
+.accordion[data-animated='true'] .accordion__trigger {
+  transition:
+    color 150ms,
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.accordion[data-animated='false'],
+.accordion[data-animated='false'] * {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion,
+  .accordion * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- Variant: default — simple dividers ---- */
+.accordion[data-variant='default'] .accordion__item + .accordion__item {
+  border-block-start: 1px solid var(--accordion-border);
+}
+
+.accordion[data-variant='default'] .accordion__trigger {
+  border-radius: 0;
+}
+
+/* ---- Variant: border — framed list ---- */
+.accordion[data-variant='border'] .accordion__list {
+  border: 1px solid var(--accordion-border);
+  border-radius: var(--accordion-radius);
+  overflow: hidden;
+}
+
+.accordion[data-variant='border'] .accordion__item + .accordion__item {
+  border-block-start: 1px solid var(--accordion-border);
+}
+
+.accordion[data-variant='border'] .accordion__trigger {
+  border-radius: 0;
+}
+
+/* ---- Variant: bold — strong headings + accent marker ---- */
+.accordion[data-variant='bold'] .accordion__heading {
+  font-weight: 700;
+  font-size: 1.0625em;
+}
+
+.accordion[data-variant='bold'] .accordion__item {
+  border-block-end: 2px solid var(--accordion-border);
+  border-inline-start: 4px solid transparent;
+}
+
+.accordion[data-variant='bold'] .accordion__item[data-state='open'] {
+  border-inline-start-color: var(--accordion-accent);
+}
+
+.accordion[data-variant='bold'] .accordion__item[data-state='open'] .accordion__trigger {
+  color: var(--accordion-accent);
+}
+
+.accordion[data-variant='bold'] .accordion__trigger {
+  border-radius: 0;
+}
+
+/* ---- Variant: bg — filled items ---- */
+.accordion[data-variant='bg'] .accordion__list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--accordion-gap) / 2);
+}
+
+.accordion[data-variant='bg'] .accordion__item {
+  background: var(--accordion-surface-muted);
+  border-radius: var(--accordion-radius);
+}
+
+.accordion[data-variant='bg'] .accordion__item[data-state='open'] {
+  background: var(--accordion-accent-soft);
+}
+
+.accordion[data-variant='bg'] .accordion__item[data-state='open'] .accordion__trigger {
+  color: var(--accordion-accent);
+  font-weight: 600;
+}
+
+/* ---- Variant: separated — individual cards ---- */
+.accordion[data-variant='separated'] .accordion__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--accordion-gap);
+}
+
+.accordion[data-variant='separated'] .accordion__item {
+  background: var(--accordion-surface);
+  border: 1px solid var(--accordion-border);
+  border-radius: var(--accordion-radius);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.06);
+}
+
+.accordion[data-variant='separated'] .accordion__item[data-state='open'] {
+  border-color: color-mix(in srgb, var(--accordion-accent) 40%, var(--accordion-border));
+  box-shadow: 0 4px 16px rgb(16 24 40 / 0.08);
+}
+
+/* ---- Print: show every answer, hide controls ---- */
+@media print {
+  .accordion[data-print-expanded='true'] .accordion__content {
+    grid-template-rows: 1fr !important;
+    opacity: 1 !important;
+  }
+
+  .accordion[data-print-expanded='true'] .accordion__content-body[hidden] {
+    display: block !important;
+    content-visibility: visible !important;
+  }
+
+  .accordion__toolbar {
+    display: none;
+  }
+
+  .accordion__item {
+    break-inside: avoid;
+  }
+}
