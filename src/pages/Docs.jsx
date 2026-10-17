@@ -53,6 +53,11 @@ const CODE = {
 
   import: `import { Accordion } from './components/accordion';`,
 
+  npmInstall: `npm install react-accordion-kit`,
+
+  npmImport: `import { Accordion } from 'react-accordion-kit';
+import 'react-accordion-kit/styles.css'; // once, e.g. in your app entry`,
+
   usage: `import { Accordion } from './components/accordion';
 
 const items = [
@@ -339,8 +344,8 @@ export default function Docs({ section }) {
 
         <Section id="introduction" title="Introduction">
           <p>
-            This component follows the <strong>“copy, paste, own”</strong> approach: it is not an npm package.
-            You copy the source into your codebase, so you can read, change and extend every line.
+            Install it from npm, or follow the <strong>“copy, paste, own”</strong> approach: copy the source into your
+            codebase, so you can read, change and extend every line.
           </p>
           <ul className="docs-list">
             <li><strong>Zero dependencies</strong> — only React 18+. No UI kit, no CSS framework, no icon library.</li>
@@ -351,6 +356,19 @@ export default function Docs({ section }) {
         </Section>
 
         <Section id="installation" title="Installation">
+          <h3 className="docs-subtitle">Option 1: npm</h3>
+          <ol className="docs-steps">
+            <li>
+              <p>Install the package. React 18+ is its only peer dependency.</p>
+              <CodeBlock code={CODE.npmInstall} title="Terminal" />
+            </li>
+            <li>
+              <p>Import the component, and the stylesheet once. TypeScript types are included, and the build is marked <code className="code-inline">"use client"</code> for the Next.js App Router.</p>
+              <CodeBlock code={CODE.npmImport} />
+            </li>
+          </ol>
+
+          <h3 className="docs-subtitle">Option 2: copy the source</h3>
           <ol className="docs-steps">
             <li>
               <p>Copy the <code className="code-inline">accordion</code> folder into your project:</p>
