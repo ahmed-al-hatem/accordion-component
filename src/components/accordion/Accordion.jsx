@@ -29,6 +29,9 @@ const getItemValue = (item, index) => String(item.value ?? item.id ?? index);
 const supportsUntilFound = () =>
   typeof HTMLElement !== 'undefined' && 'onbeforematch' in HTMLElement.prototype;
 
+// useLayoutEffect warns during server rendering; fall back to useEffect there.
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 function useAccordionContext(component) {
   const context = useContext(AccordionContext);
   if (!context) throw new Error(`<${component}> must be rendered inside <Accordion>.`);
@@ -424,11 +427,14 @@ export function AccordionContent({ children, className, ...rest }) {
   const [hasOpened, setHasOpened] = useState(item.isOpen);
   if (item.isOpen && !hasOpened) setHasOpened(true);
 
-  const untilFound = context.searchable && supportsUntilFound();
+  // Detected after mount so server and first client render match (no hydration mismatch).
+  const [isSupported, setIsSupported] = useState(false);
+  useIsomorphicLayoutEffect(() => setIsSupported(supportsUntilFound()), []);
+  const untilFound = context.searchable && isSupported;
   const { open, closeDelay } = context;
 
   // Hide closed content with hidden="until-found" once the close animation ends.
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const body = bodyRef.current;
     if (!body) return undefined;
     if (!untilFound || item.isOpen) {
