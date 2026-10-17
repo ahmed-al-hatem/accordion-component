@@ -1,18 +1,65 @@
 {
-  "name": "accordion-playground",
-  "private": true,
+  "name": "react-accordion-kit",
   "version": "1.0.0",
+  "description": "Accessible, themeable, dependency-free React accordion with composable parts, find-in-page, deep links and RTL support.",
+  "keywords": [
+    "react",
+    "accordion",
+    "collapse",
+    "faq",
+    "disclosure",
+    "accessible",
+    "a11y",
+    "wai-aria",
+    "rtl",
+    "component"
+  ],
+  "homepage": "https://ahmed-al-hatem.github.io/accordion-component/",
+  "bugs": {
+    "url": "https://github.com/ahmed-al-hatem/accordion-component/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmed-al-hatem/accordion-component.git"
+  },
+  "license": "MIT",
+  "author": "ahmed-al-hatem",
   "type": "module",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      },
+      "require": {
+        "types": "./lib/index.d.cts",
+        "default": "./lib/index.cjs"
+      }
+    },
+    "./styles.css": "./lib/styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:lib": "vite build --config vite.lib.config.js",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepublishOnly": "npm test && npm run build:lib"
   },
-  "dependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@testing-library/dom": "10.4.0",
@@ -21,6 +68,8 @@
     "@testing-library/user-event": "14.5.2",
     "@vitejs/plugin-react": "4.3.4",
     "jsdom": "25.0.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "vite": "5.4.11",
     "vitest": "2.1.8"
   }
